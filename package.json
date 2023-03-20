@@ -4,6 +4,23 @@
   "description": "VSCode extension that allows you to use ChatGPT on the editor.",
   "version": "1.0.0",
   "keywords": [
+    "vscode",
+    "chatgpt",
+    "AI",
+    "GPT-3",
+    "GPT_4",
+    "openai"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/takagimeow/vscode-chatgpt"
+  },
+  "preview": false,
+  "license": "MIT",
+  "author": {
+    "name": "Keisuke Takagi",
+    "email": "mit@takagi.app"
+  },
   "publisher": "takagimeow",
   "engines": {
     "vscode": "^1.76.0"
@@ -14,6 +31,11 @@
   "activationEvents": [
     "onCommand:chatgpt-editor.prompt"
   ],
+  "icon": "resources/extensionIcon.png",
+  "galleryBanner": {
+    "color": "#11A47F",
+    "theme": "light"
+  },
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
