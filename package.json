@@ -2,7 +2,7 @@
   "name": "chatgpt-editor",
   "displayName": "chatgpt-editor",
   "description": "VSCode extension that allows you to use ChatGPT on the editor.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "keywords": [
     "vscode",
     "chatgpt",
