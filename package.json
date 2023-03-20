@@ -2,20 +2,65 @@
   "name": "chatgpt-editor",
   "displayName": "chatgpt-editor",
   "description": "VSCode extension that allows you to use ChatGPT on the editor.",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "keywords": [
+  "publisher": "takagimeow",
   "engines": {
     "vscode": "^1.76.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:chatgpt-editor.prompt"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "chatgpt-editor.helloWorld",
-        "title": "Hello World"
+        "command": "chatgpt-editor.prompt",
+        "title": "Prompt Selected Texts"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "chatgpt-editor.prompt",
+          "when": "editorHasSelection && !isInDiffEditor"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "ChatGPT Editor",
+      "properties": {
+        "chatgpt-editor.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key for ChatGPT"
+        },
+        "chatgpt-editor.model": {
+          "type": "string",
+          "default": "gpt-3.5-turbo-0301",
+          "enum": [
+            "gpt-3.5-turbo-0301",
+            "gpt-3.5-turbo",
+            "gpt-4"
+          ],
+          "description": "Model for ChatGPT"
+        },
+        "chatgpt-editor.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "description": "Temperature for ChatGPT"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "chatgpt-editor.prompt",
+        "key": "ctrl+shift+c",
+        "mac": "cmd+shift+c",
+        "when": "editorHasSelection && !isInDiffEditor"
       }
     ]
   },
