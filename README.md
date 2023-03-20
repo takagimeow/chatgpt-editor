@@ -10,7 +10,7 @@ You can use VSCode's editor like a big canvas and get results from ChatGPT based
 
 The result received from ChatGPT will be inserted at the end of the selected text.
 
-![Prompting selected texts](examples/main.png)
+![Prompting selected texts](https://github.com/takagimeow/chatgpt-editor/blob/main/examples/main.png?raw=true)
 
 ## Links
 
@@ -32,11 +32,12 @@ The following commands are available to prompt texts in the editor:
 
 The commands are also accessible via the command palette.
 
-![Commands](examples/command-pallette.png)
+![Commands](https://github.com/takagimeow/chatgpt-editor/blob/main/examples/command-pallette.png?raw=true)
+
 
 In addition, the context menu is extended and now includes the prompting commands.
 
-![Context menu](examples/context-menu.png)
+![Context menu](https://github.com/takagimeow/chatgpt-editor/blob/main/examples/context-menu.png?raw=true)
 
 ## Requirements
 
@@ -89,6 +90,3 @@ Users appreciate release notes as you update your extension.
 Initial release of chatgpt-editor
 
 [MIT LICENSE](LICENSE)
-
-
-
