@@ -2,7 +2,7 @@
   "name": "chatgpt-editor",
   "displayName": "chatgpt-editor",
   "description": "VSCode extension that allows you to use ChatGPT on the editor.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "vscode",
     "chatgpt",
@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/takagimeow/vscode-chatgpt"
+    "url": "https://github.com/takagimeow/chatgpt-editor"
   },
   "preview": false,
   "license": "MIT",
