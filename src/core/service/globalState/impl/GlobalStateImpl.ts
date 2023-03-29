@@ -8,6 +8,10 @@ export class GlobalStateImpl implements GlobalState {
     this.context = container.resolve<vscode.ExtensionContext>("ExtensionContext");
   }
 
+  async clear(key: string): Promise<void> {
+    await this.context.globalState.update(key, null);
+  }
+
   async save(key: string, value: string): Promise<void> {
     await this.context.globalState.update(key, value);
   }
