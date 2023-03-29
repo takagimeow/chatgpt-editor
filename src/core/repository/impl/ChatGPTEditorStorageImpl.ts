@@ -20,9 +20,7 @@ export class ChatGPTEditorStorageImpl implements ChatGPTEditorStorage {
   getElement(id?: string): TreeElement | undefined {
     const elements = this.load();
     const providedOrRootId = id ?? this.rootId;
-
     const result = elements.get(providedOrRootId);
-
     return result || undefined;
   }
 
@@ -49,7 +47,8 @@ export class ChatGPTEditorStorageImpl implements ChatGPTEditorStorage {
       content,
     };
     elements.set(data.id, { data, parentId });
-    this.getElement(parentId)?.childIds?.push(data.id);
+    elements.get(parentId)?.childIds?.push(data.id);
+    
     await this.save(elements);
   }
 
@@ -69,32 +68,31 @@ export class ChatGPTEditorStorageImpl implements ChatGPTEditorStorage {
   }
 
   deserialize(json: string): Elements {
-    const elements = this.loadDefaultElements();
+    const defaultElements = this.loadDefaultElements();
 
-    if (!json) { return elements; }
+    if (!json) { return defaultElements; }
     let tree: TreeElement[];
     try {
       tree = JSON.parse(json) as TreeElement[];
     } catch (error) {
-      return elements;
+      return defaultElements;
     }
 
-    if (!Array.isArray(tree)) { return elements; }
-
+    if (!Array.isArray(tree)) { return defaultElements; }
+    const elements = defaultElements; // new Map<string, TreeElement>();
     tree.forEach((element) => {
       elements.set(element.data.id, element);
       if (!element.parentId) {
         this.rootId = element.data.id;
       }
     });
-    console.log("elements: ", elements);
     return elements;
   }
 
   private loadDefaultElements(): Elements {
     const elements = new Map<string, TreeElement>();
     const root: TreeElementData = {
-      id: nanoid(),
+      id: this.rootId !== "" ? this.rootId : nanoid(),
       label: "root",
       context: "",
       content: "",
