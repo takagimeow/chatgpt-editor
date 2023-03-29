@@ -28,9 +28,6 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:chatgpt-editor.prompt"
-  ],
   "icon": "resources/extensionIcon.png",
   "galleryBanner": {
     "color": "#11A47F",
@@ -38,13 +35,53 @@
   },
   "main": "./out/extension.js",
   "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "chatgptEditorView",
+          "name": "ChatGPT Editor"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "chatgpt-editor.prompt",
         "title": "Prompt Selected Texts"
+      },
+      {
+        "command": "chatgpt-editor.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "chatgpt-editor.insertResponse",
+        "title": "Insert Response",
+        "category": "Response"
+      },
+      {
+        "command": "chatgpt-editor.deleteResponse",
+        "title": "Delete Response",
+        "category": "Response"
       }
     ],
     "menus": {
+      "view/title": [
+        {
+          "command": "chatgpt-editor.refresh",
+          "when": "view == chatgptEditorView",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "chatgpt-editor.deleteResponse",
+          "when": "view == chatgptEditorView",
+          "group": "chatgpt-editor.viewItemContext.baseGroup@1"
+        }
+      ],
       "editor/context": [
         {
           "command": "chatgpt-editor.prompt",
