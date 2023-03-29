@@ -74,6 +74,15 @@
           "type": "number",
           "default": 0.7,
           "description": "Temperature for ChatGPT"
+        },
+        "chatgpt-editor.insertType": {
+          "type": "string",
+          "default": "content-with-context",
+          "enum": [
+            "content-with-context",
+            "content",
+            "context"
+          ]
         }
       }
     },
