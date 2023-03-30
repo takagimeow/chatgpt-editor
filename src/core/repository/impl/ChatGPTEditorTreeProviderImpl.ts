@@ -11,14 +11,12 @@ import { ChatGPTEditorTreeProvider, ChatGPTTreeItem } from "../ChatGPTEditorTree
  */
 export class ChatGPTEditorTreeProviderImpl implements ChatGPTEditorTreeProvider {
   public readonly storage: ChatGPTEditorStorage;
-  public readonly context: vscode.ExtensionContext;
 
   private _onDidChangeTreeData: vscode.EventEmitter<ChatGPTTreeItem | undefined | null | void> = new vscode.EventEmitter<ChatGPTTreeItem | undefined>();
   readonly onDidChangeTreeData: vscode.Event<ChatGPTTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
   constructor() {
     this.storage = container.resolve<ChatGPTEditorStorage>("ChatGPTEditorStorage");
-    this.context = container.resolve<vscode.ExtensionContext>("ExtensionContext");
     this.refresh();
   }
   getTreeItem(element: ChatGPTTreeItem): vscode.TreeItem {
