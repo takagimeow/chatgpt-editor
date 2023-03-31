@@ -9,8 +9,12 @@ import { ChatGPTEditorTreeProvider, ChatGPTTreeItem } from "../ChatGPTEditorTree
  * However, ChatGPTEditorTreeProvider is not associated with any specific command. 
  * Therefore, from a dependency standpoint, endpoints and ChatGPTEditorTreeProvider are unrelated.
  */
-export class ChatGPTEditorTreeProviderImpl implements ChatGPTEditorTreeProvider {
+export class ChatGPTEditorTreeProviderImpl
+  implements ChatGPTEditorTreeProvider {
   public readonly storage: ChatGPTEditorStorage;
+
+  dropMimeTypes = ["application/vnd.code.tree.chatgptEditorView"];
+  dragMimeTypes = ["text/uri-list"];
 
   private _onDidChangeTreeData: vscode.EventEmitter<ChatGPTTreeItem | undefined | null | void> = new vscode.EventEmitter<ChatGPTTreeItem | undefined>();
   readonly onDidChangeTreeData: vscode.Event<ChatGPTTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
@@ -31,7 +35,9 @@ export class ChatGPTEditorTreeProviderImpl implements ChatGPTEditorTreeProvider 
       return new ChatGPTTreeItem(
         currentElement.data.label,
         currentElement.data.content,
-        vscode.TreeItemCollapsibleState.None,
+        currentElement.childIds
+          ? vscode.TreeItemCollapsibleState.Expanded
+          : vscode.TreeItemCollapsibleState.None,
         currentElement.data.id,
       );
     }) ?? [];
@@ -41,5 +47,39 @@ export class ChatGPTEditorTreeProviderImpl implements ChatGPTEditorTreeProvider 
 
   refresh(): void {
     this._onDidChangeTreeData?.fire();
+  }
+
+  handleDrag(source: readonly ChatGPTTreeItem[], dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
+    if (token.isCancellationRequested) {
+      return;
+    }
+
+    if (source.length > 1) {
+      throw new Error("Expected only one element to be dragged");
+    }
+
+    dataTransfer.set(
+      "application/vnd.code.tree.chatgptEditorView",
+      new vscode.DataTransferItem(source[0])
+    );
+  }
+
+  handleDrop(target: ChatGPTTreeItem | undefined, dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
+      if (token.isCancellationRequested) {
+        return;
+      }
+
+      const transferItem = dataTransfer.get(
+        "application/vnd.code.tree.chatgptEditorView"
+      );
+
+      if (!transferItem) {
+        return;
+      }
+
+      return new Promise(async () => {
+        await this.storage.moveElement(transferItem.value.id, target?.id);
+        this.refresh();
+      });
   }
 }
