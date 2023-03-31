@@ -29,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
 			treeDataProvider: endpoint.chatgptEditorTreeProvider,
 			showCollapseAll: true,
 			canSelectMany: false,
-			dragAndDropController: undefined
+			dragAndDropController: endpoint.chatgptEditorTreeProvider,
 		})
 	);
 	// Register command
@@ -37,6 +37,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("chatgpt-editor.refresh", endpoint.refresh()),
 		vscode.commands.registerCommand("chatgpt-editor.deleteResponse", endpoint.deleteResponse()),
 		vscode.commands.registerCommand("chatgpt-editor.insertResponse", endpoint.insertResponse()),
+		vscode.commands.registerCommand("chatgpt-editor.renameResponse", endpoint.renameResponse()),
+		vscode.commands.registerCommand("chatgpt-editor.createFolder", endpoint.createFolder()),
 		vscode.commands.registerCommand("chatgpt-editor.prompt", async () => { // Retrieve settings
 			const config = vscode.workspace.getConfiguration("chatgpt-editor");
 			// Obtain an API key

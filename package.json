@@ -65,6 +65,20 @@
         "command": "chatgpt-editor.deleteResponse",
         "title": "Delete Response",
         "category": "Response"
+      },
+      {
+        "command": "chatgpt-editor.renameResponse",
+        "title": "Rename Response",
+        "category": "Response"
+      },
+      {
+        "command": "chatgpt-editor.createFolder",
+        "title": "New Folder",
+        "category": "Folder",
+        "icon": {
+          "light": "resources/light/folder.svg",
+          "dark": "resources/dark/folder.svg"
+        }
       }
     ],
     "menus": {
@@ -73,13 +87,28 @@
           "command": "chatgpt-editor.refresh",
           "when": "view == chatgptEditorView",
           "group": "navigation"
+        },
+        {
+          "command": "chatgpt-editor.createFolder",
+          "when": "view == chatgptEditorView",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
         {
-          "command": "chatgpt-editor.deleteResponse",
+          "command": "chatgpt-editor.createFolder",
           "when": "view == chatgptEditorView",
           "group": "chatgpt-editor.viewItemContext.baseGroup@1"
+        },
+        {
+          "command": "chatgpt-editor.renameResponse",
+          "when": "view == chatgptEditorView",
+          "group": "chatgpt-editor.viewItemContext.baseGroup@2"
+        },
+        {
+          "command": "chatgpt-editor.deleteResponse",
+          "when": "view == chatgptEditorView",
+          "group": "chatgpt-editor.viewItemContext.baseGroup@3"
         }
       ],
       "editor/context": [
