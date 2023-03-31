@@ -11,4 +11,7 @@ export interface ChatGPTEditorStorage {
   getContextAndContent(id: string): string;
   save(elements: Elements): Promise<void>; // Called from saveContent()
   load(): Elements;
+  renameElement(id: string, newName: string): Promise<void>;
+  createFolder(name: string, relativeToId?: string): Promise<void>;
+  moveElement(sourceId: string, targetId?: string): Promise<void>;
 }
