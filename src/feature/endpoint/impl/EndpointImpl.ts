@@ -73,4 +73,59 @@ export class EndpointImpl implements Endpoint {
       this._chatgptEditorTreeProvider.refresh();
     };
   }
+
+  public renameResponse(): (item: ChatGPTTreeItem) => Promise<void> {
+    return async (item: ChatGPTTreeItem) => {
+      if (!item) {
+        vscode.window.showInformationMessage(
+          'Rename a reponse by right clicking on it in the list selecting "Rename"'
+        );
+        return;
+      }
+
+      const options: vscode.InputBoxOptions = {
+        ignoreFocusOut: false,
+        placeHolder: "New Name",
+        prompt: "Enter a new name for the response",
+        value: item.label,
+      };
+
+      const newName = await vscode.window.showInputBox(options);
+
+      if (!newName) {
+        return;
+      }
+
+      await this._chatgptEditorStorage.renameElement(item.id, newName);
+      this._chatgptEditorTreeProvider.refresh();
+    };
+  }
+
+  public createFolder(): (item?: ChatGPTTreeItem) => Promise<void> {
+    return async (item?: ChatGPTTreeItem) => {
+      const options: vscode.InputBoxOptions = {
+        ignoreFocusOut: false,
+        placeHolder: "Folder Name",
+        prompt: "Enter a name for the folder",
+        validateInput: (value: string) => {
+          if (value.length === 0) {
+            return "Folder name cannot be empty";
+          }
+          if (value.includes("/")) {
+            return "Folder name cannot contain '/'";
+          }
+          return null;
+        }
+      };
+
+      const folderName = await vscode.window.showInputBox(options);
+
+      if (!folderName) {
+        return;
+      }
+
+      await this._chatgptEditorStorage.createFolder(folderName, item?.id);
+      this._chatgptEditorTreeProvider.refresh();
+    };
+  }
 }

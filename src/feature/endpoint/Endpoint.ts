@@ -10,4 +10,6 @@ export interface Endpoint {
   insertResponse(): (id: string) => void;
   deleteResponse(): (item: ChatGPTTreeItem) => Promise<void>;
   refresh(): () => void;
+  renameResponse(): (item: ChatGPTTreeItem) => Promise<void>;
+  createFolder(): (item?: ChatGPTTreeItem) => Promise<void>;
 }
