@@ -77,11 +77,12 @@ export class ChatGPTEditorStorageImpl implements ChatGPTEditorStorage {
       return defaultElements;
     }
 
-    if (!Array.isArray(tree)) { return defaultElements; }
-    const elements = defaultElements; // new Map<string, TreeElement>();
+    if (!Array.isArray(tree) || tree.length === 0) { return defaultElements; }
+    const elements = new Map<string, TreeElement>(); // new Map<string, TreeElement>();
     tree.forEach((element) => {
       elements.set(element.data.id, element);
       if (!element.parentId) {
+        // Update the ID of the new root element
         this.rootId = element.data.id;
       }
     });
@@ -111,13 +112,16 @@ export class ChatGPTEditorStorageImpl implements ChatGPTEditorStorage {
 
   load(): Elements {
     const value = this.globalState.get(this.storageKey);
-    const elements = this.deserialize(value || "[]");
+    const elements = this.deserialize(value ?? "");
 
     return elements;
   }
 
   private isFolder(element: TreeElement): boolean {
-    return element.childIds !== null;
+    if (element.childIds) {
+      return true;
+    }
+    return false;
   }
   async createFolder(name: string, relativeToId?: string | undefined): Promise<void> {
     const relativeToElement = this.getElement(relativeToId);
