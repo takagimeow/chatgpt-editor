@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export class ChatGPTTreeItem extends vscode.TreeItem {
+export class ChatGPTEditorTreeItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
     public content: string,
@@ -30,8 +30,8 @@ export class ChatGPTTreeItem extends vscode.TreeItem {
 
 export interface ChatGPTEditorTreeProvider 
   extends 
-    vscode.TreeDataProvider<ChatGPTTreeItem>,
-    vscode.TreeDragAndDropController<ChatGPTTreeItem>
+    vscode.TreeDataProvider<ChatGPTEditorTreeItem>,
+    vscode.TreeDragAndDropController<ChatGPTEditorTreeItem>
 {
   refresh(): void;
 }

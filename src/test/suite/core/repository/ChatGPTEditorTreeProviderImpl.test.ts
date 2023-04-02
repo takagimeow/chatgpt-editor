@@ -3,7 +3,7 @@ import { suite, test, beforeEach } from "mocha";
 import { container } from "tsyringe";
 import * as assert from "assert";
 import { ChatGPTEditorTreeProviderImpl } from "../../../../core/repository/impl/ChatGPTEditorTreeProviderImpl";
-import { ChatGPTTreeItem } from "../../../../core/repository/ChatGPTEditorTreeProvider";
+import { ChatGPTEditorTreeItem } from "../../../../core/repository/ChatGPTEditorTreeProvider";
 import * as vscode from "vscode";
 
 suite("ChatGPTEditorTreeProviderImpl", () => {
@@ -82,7 +82,7 @@ suite("ChatGPTEditorTreeProviderImpl", () => {
     });
     test("should return the same argument", async () => {
       const treeProvider = new ChatGPTEditorTreeProviderImpl();
-      const mockElement: ChatGPTTreeItem = new ChatGPTTreeItem(
+      const mockElement: ChatGPTEditorTreeItem = new ChatGPTEditorTreeItem(
         "",
         "",
         vscode.TreeItemCollapsibleState.None,

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { container } from "tsyringe";
 import { ChatGPTEditorStorage } from "../ChatGPTEditorStorage";
-import { ChatGPTEditorTreeProvider, ChatGPTTreeItem } from "../ChatGPTEditorTreeProvider";
+import { ChatGPTEditorTreeProvider, ChatGPTEditorTreeItem } from "../ChatGPTEditorTreeProvider";
 
 /**
  * The functions that are published from endpoints are associated with the commands 
@@ -16,23 +16,23 @@ export class ChatGPTEditorTreeProviderImpl
   dropMimeTypes = ["application/vnd.code.tree.chatgptEditorView"];
   dragMimeTypes = ["text/uri-list"];
 
-  private _onDidChangeTreeData: vscode.EventEmitter<ChatGPTTreeItem | undefined | null | void> = new vscode.EventEmitter<ChatGPTTreeItem | undefined>();
-  readonly onDidChangeTreeData: vscode.Event<ChatGPTTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<ChatGPTEditorTreeItem | undefined | null | void> = new vscode.EventEmitter<ChatGPTEditorTreeItem | undefined>();
+  readonly onDidChangeTreeData: vscode.Event<ChatGPTEditorTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
   constructor() {
     this.storage = container.resolve<ChatGPTEditorStorage>("ChatGPTEditorStorage");
     this.refresh();
   }
-  getTreeItem(element: ChatGPTTreeItem): vscode.TreeItem {
+  getTreeItem(element: ChatGPTEditorTreeItem): vscode.TreeItem {
     return element;
   }
 
-  getChildren(element?: ChatGPTTreeItem): Thenable<ChatGPTTreeItem[]> {
+  getChildren(element?: ChatGPTEditorTreeItem): Thenable<ChatGPTEditorTreeItem[]> {
     // Synchronize the value of the elements property of this.storage with the latest state
     const result = this.storage.getElement(element?.id)?.childIds?.map((id) => {
       const currentElement = this.storage.getElement(id);
       if (!currentElement) { return; }
-      return new ChatGPTTreeItem(
+      return new ChatGPTEditorTreeItem(
         currentElement.data.label,
         currentElement.data.content,
         currentElement.childIds
@@ -41,7 +41,7 @@ export class ChatGPTEditorTreeProviderImpl
         currentElement.data.id,
       );
     }) ?? [];
-    const newResult: ChatGPTTreeItem[] = result.filter((item) => item !== undefined && item !== null) as ChatGPTTreeItem[];
+    const newResult: ChatGPTEditorTreeItem[] = result.filter((item) => item !== undefined && item !== null) as ChatGPTEditorTreeItem[];
     return Promise.resolve(newResult);
   }
 
@@ -49,7 +49,7 @@ export class ChatGPTEditorTreeProviderImpl
     this._onDidChangeTreeData?.fire();
   }
 
-  handleDrag(source: readonly ChatGPTTreeItem[], dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
+  handleDrag(source: readonly ChatGPTEditorTreeItem[], dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
     if (token.isCancellationRequested) {
       return;
     }
@@ -64,7 +64,7 @@ export class ChatGPTEditorTreeProviderImpl
     );
   }
 
-  handleDrop(target: ChatGPTTreeItem | undefined, dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
+  handleDrop(target: ChatGPTEditorTreeItem | undefined, dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
       if (token.isCancellationRequested) {
         return;
       }

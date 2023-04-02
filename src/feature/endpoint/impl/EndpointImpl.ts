@@ -3,7 +3,7 @@ import { ChatGPTEditorStorage } from "../../../core/repository/ChatGPTEditorStor
 import { Endpoint } from "../Endpoint";
 import * as vscode from "vscode";
 import { Config } from "../../../core/service/config/Config";
-import { ChatGPTEditorTreeProvider, ChatGPTTreeItem } from "../../../core/repository/ChatGPTEditorTreeProvider";
+import { ChatGPTEditorTreeProvider, ChatGPTEditorTreeItem } from "../../../core/repository/ChatGPTEditorTreeProvider";
 
 export class EndpointImpl implements Endpoint {
   private _chatgptEditorTreeProvider: ChatGPTEditorTreeProvider;
@@ -60,8 +60,8 @@ export class EndpointImpl implements Endpoint {
       });
     };
   }
-  public deleteResponse(): (item: ChatGPTTreeItem) => Promise<void> {
-    return async (item: ChatGPTTreeItem) => {
+  public deleteResponse(): (item: ChatGPTEditorTreeItem) => Promise<void> {
+    return async (item: ChatGPTEditorTreeItem) => {
       if (!item) {
         // TODO: When testing, find out how to mock this vscode.window.showInformationMessage()
         vscode.window.showInformationMessage(
@@ -74,8 +74,8 @@ export class EndpointImpl implements Endpoint {
     };
   }
 
-  public renameResponse(): (item: ChatGPTTreeItem) => Promise<void> {
-    return async (item: ChatGPTTreeItem) => {
+  public renameResponse(): (item: ChatGPTEditorTreeItem) => Promise<void> {
+    return async (item: ChatGPTEditorTreeItem) => {
       if (!item) {
         vscode.window.showInformationMessage(
           'Rename a reponse by right clicking on it in the list selecting "Rename"'
@@ -101,8 +101,8 @@ export class EndpointImpl implements Endpoint {
     };
   }
 
-  public createFolder(): (item?: ChatGPTTreeItem) => Promise<void> {
-    return async (item?: ChatGPTTreeItem) => {
+  public createFolder(): (item?: ChatGPTEditorTreeItem) => Promise<void> {
+    return async (item?: ChatGPTEditorTreeItem) => {
       const options: vscode.InputBoxOptions = {
         ignoreFocusOut: false,
         placeHolder: "Folder Name",
