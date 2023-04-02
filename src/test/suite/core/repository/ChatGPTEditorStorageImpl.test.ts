@@ -171,9 +171,6 @@ suite("ChatGPTEditorStorageImpl", () => {
       };
       container.register("GlobalState", { useValue: globalState });
       const result = new ChatGPTEditorStorageImpl().load();
-      result.forEach((element) => {
-        console.log("element", element);
-      });
       assert.equal(result.size, 1);
     });
     test("should return default value when json is invalid", () => {

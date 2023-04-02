@@ -19,7 +19,6 @@ export class EndpointImpl implements Endpoint {
   }
   public refresh(): () => void {
     return () => {
-      console.log("refresh!")
       this._chatgptEditorTreeProvider.refresh();
     };
   }

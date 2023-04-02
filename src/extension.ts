@@ -115,7 +115,6 @@ export function activate(context: vscode.ExtensionContext) {
 						// The label passed as the second argument is displayed in the tree view
 						// used as the title of the element
 						const label = texts[index]?.slice(0, 100) ?? message.slice(0, 100);
-						console.log("label: ", label);
 						await endpoint.saveReponse(
 							texts[index] ?? "",
 							message,
