@@ -3,7 +3,7 @@ import { ChatGPTEditorStorage } from "../../../core/repository/ChatGPTEditorStor
 import { Endpoint } from "../Endpoint";
 import * as vscode from "vscode";
 import { Config } from "../../../core/service/config/Config";
-import { ChatGPTEditorTreeProvider, ChatGPTTreeItem } from "../../../core/repository/ChatGPTEditorTreeProvider";
+import { ChatGPTEditorTreeProvider, ChatGPTEditorTreeItem } from "../../../core/repository/ChatGPTEditorTreeProvider";
 
 export class EndpointImpl implements Endpoint {
   private _chatgptEditorTreeProvider: ChatGPTEditorTreeProvider;
@@ -19,7 +19,6 @@ export class EndpointImpl implements Endpoint {
   }
   public refresh(): () => void {
     return () => {
-      console.log("refresh!")
       this._chatgptEditorTreeProvider.refresh();
     };
   }
@@ -60,8 +59,8 @@ export class EndpointImpl implements Endpoint {
       });
     };
   }
-  public deleteResponse(): (item: ChatGPTTreeItem) => Promise<void> {
-    return async (item: ChatGPTTreeItem) => {
+  public deleteResponse(): (item: ChatGPTEditorTreeItem) => Promise<void> {
+    return async (item: ChatGPTEditorTreeItem) => {
       if (!item) {
         // TODO: When testing, find out how to mock this vscode.window.showInformationMessage()
         vscode.window.showInformationMessage(
@@ -70,6 +69,61 @@ export class EndpointImpl implements Endpoint {
         return;
       }
       await this._chatgptEditorStorage.deleteElement(item.id);
+      this._chatgptEditorTreeProvider.refresh();
+    };
+  }
+
+  public renameResponse(): (item: ChatGPTEditorTreeItem) => Promise<void> {
+    return async (item: ChatGPTEditorTreeItem) => {
+      if (!item) {
+        vscode.window.showInformationMessage(
+          'Rename a reponse by right clicking on it in the list selecting "Rename"'
+        );
+        return;
+      }
+
+      const options: vscode.InputBoxOptions = {
+        ignoreFocusOut: false,
+        placeHolder: "New Name",
+        prompt: "Enter a new name for the response",
+        value: item.label,
+      };
+
+      const newName = await vscode.window.showInputBox(options);
+
+      if (!newName) {
+        return;
+      }
+
+      await this._chatgptEditorStorage.renameElement(item.id, newName);
+      this._chatgptEditorTreeProvider.refresh();
+    };
+  }
+
+  public createFolder(): (item?: ChatGPTEditorTreeItem) => Promise<void> {
+    return async (item?: ChatGPTEditorTreeItem) => {
+      const options: vscode.InputBoxOptions = {
+        ignoreFocusOut: false,
+        placeHolder: "Folder Name",
+        prompt: "Enter a name for the folder",
+        validateInput: (value: string) => {
+          if (value.length === 0) {
+            return "Folder name cannot be empty";
+          }
+          if (value.includes("/")) {
+            return "Folder name cannot contain '/'";
+          }
+          return null;
+        }
+      };
+
+      const folderName = await vscode.window.showInputBox(options);
+
+      if (!folderName) {
+        return;
+      }
+
+      await this._chatgptEditorStorage.createFolder(folderName, item?.id);
       this._chatgptEditorTreeProvider.refresh();
     };
   }

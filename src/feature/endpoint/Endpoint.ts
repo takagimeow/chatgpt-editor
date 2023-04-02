@@ -1,4 +1,4 @@
-import { ChatGPTEditorTreeProvider, ChatGPTTreeItem } from "../../core/repository/ChatGPTEditorTreeProvider";
+import { ChatGPTEditorTreeProvider, ChatGPTEditorTreeItem } from "../../core/repository/ChatGPTEditorTreeProvider";
 
 /*
 TODO: Create a method type that returns a function
@@ -8,6 +8,8 @@ export interface Endpoint {
   chatgptEditorTreeProvider: ChatGPTEditorTreeProvider;
   saveReponse(context: string, content: string, label: string): Promise<void>;
   insertResponse(): (id: string) => void;
-  deleteResponse(): (item: ChatGPTTreeItem) => Promise<void>;
+  deleteResponse(): (item: ChatGPTEditorTreeItem) => Promise<void>;
   refresh(): () => void;
+  renameResponse(): (item: ChatGPTEditorTreeItem) => Promise<void>;
+  createFolder(): (item?: ChatGPTEditorTreeItem) => Promise<void>;
 }
