@@ -167,6 +167,13 @@ export class ChatGPTEditorStorageImpl implements ChatGPTEditorStorage {
       return;
     }
 
+    // `Element with id xxx is already registered` error will occur.
+    // This error occurs when an element with the same ID already exists.
+    // Therefore, if the same ID exists in childIds, do not move it.
+    if (targetElement.childIds?.findIndex((id) => id === sourceId) !== -1) {
+      return;
+    }
+
     const newParentId = this.isFolder(targetElement)
       ? targetElement.data.id
       : targetElement.parentId;
