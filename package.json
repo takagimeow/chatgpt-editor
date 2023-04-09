@@ -28,9 +28,6 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:chatgpt-editor.prompt"
-  ],
   "icon": "resources/extensionIcon.png",
   "galleryBanner": {
     "color": "#11A47F",
@@ -38,13 +35,82 @@
   },
   "main": "./out/extension.js",
   "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "chatgptEditorView",
+          "name": "ChatGPT Editor"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "chatgpt-editor.prompt",
         "title": "Prompt Selected Texts"
+      },
+      {
+        "command": "chatgpt-editor.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
+        "command": "chatgpt-editor.insertResponse",
+        "title": "Insert Response",
+        "category": "Response"
+      },
+      {
+        "command": "chatgpt-editor.deleteResponse",
+        "title": "Delete Response",
+        "category": "Response"
+      },
+      {
+        "command": "chatgpt-editor.renameResponse",
+        "title": "Rename Response",
+        "category": "Response"
+      },
+      {
+        "command": "chatgpt-editor.createFolder",
+        "title": "New Folder",
+        "category": "Folder",
+        "icon": {
+          "light": "resources/light/folder.svg",
+          "dark": "resources/dark/folder.svg"
+        }
       }
     ],
     "menus": {
+      "view/title": [
+        {
+          "command": "chatgpt-editor.refresh",
+          "when": "view == chatgptEditorView",
+          "group": "navigation"
+        },
+        {
+          "command": "chatgpt-editor.createFolder",
+          "when": "view == chatgptEditorView",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "chatgpt-editor.createFolder",
+          "when": "view == chatgptEditorView",
+          "group": "chatgpt-editor.viewItemContext.baseGroup@1"
+        },
+        {
+          "command": "chatgpt-editor.renameResponse",
+          "when": "view == chatgptEditorView",
+          "group": "chatgpt-editor.viewItemContext.baseGroup@2"
+        },
+        {
+          "command": "chatgpt-editor.deleteResponse",
+          "when": "view == chatgptEditorView",
+          "group": "chatgpt-editor.viewItemContext.baseGroup@3"
+        }
+      ],
       "editor/context": [
         {
           "command": "chatgpt-editor.prompt",
@@ -74,6 +140,15 @@
           "type": "number",
           "default": 0.7,
           "description": "Temperature for ChatGPT"
+        },
+        "chatgpt-editor.insertType": {
+          "type": "string",
+          "default": "content-with-context",
+          "enum": [
+            "content-with-context",
+            "content",
+            "context"
+          ]
         }
       }
     },
@@ -108,9 +183,12 @@
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
     "sinon": "^15.0.2",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "ts-chatgpt": "^0.5.1"
+    "reflect-metadata": "^0.1.13",
+    "ts-chatgpt": "^0.5.1",
+    "tsyringe": "^4.7.0"
   }
 }
