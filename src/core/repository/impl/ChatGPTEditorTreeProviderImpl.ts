@@ -65,21 +65,21 @@ export class ChatGPTEditorTreeProviderImpl
   }
 
   handleDrop(target: ChatGPTEditorTreeItem | undefined, dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
-      if (token.isCancellationRequested) {
-        return;
-      }
+    if (token.isCancellationRequested) {
+      return;
+    }
 
-      const transferItem = dataTransfer.get(
-        "application/vnd.code.tree.chatgptEditorView"
-      );
+    const transferItem = dataTransfer.get(
+      "application/vnd.code.tree.chatgptEditorView"
+    );
 
-      if (!transferItem) {
-        return;
-      }
+    if (!transferItem) {
+      return;
+    }
 
-      return new Promise(async () => {
-        await this.storage.moveElement(transferItem.value.id, target?.id);
-        this.refresh();
-      });
+    return new Promise(async () => {
+      await this.storage.moveElement(transferItem.value.id, target?.id);
+      this.refresh();
+    });
   }
 }
